@@ -13,6 +13,15 @@ class UserAccountManager(BaseUserManager):
         user.save()
 
         return user
+    
+    
+from django.db import models
+
+class Role(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+
+    def __str__(self):
+        return self.name
 
 class UserAccount(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255, unique=True)
@@ -20,6 +29,7 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    is_doctor = models.BooleanField(default=False)
 
     objects = UserAccountManager()
 
@@ -31,6 +41,17 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
 
     def get_short_name(self):
         return self.first_name
+
+    def save(self, *args, **kwargs):
+        if self.is_doctor:
+            self.is_superuser = False
+            self.is_staff = True
+        else:
+            self.is_superuser = False
+            self.is_staff = False
+        super(UserAccount, self).save(*args, **kwargs)
     
     def __str__(self):
         return self.email
+
+    

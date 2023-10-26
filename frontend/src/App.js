@@ -9,6 +9,7 @@ import { Provider } from 'react-redux'
 import Layout from './hocs/Layout' // You should uncomment this line to use the Layout component
 import store from './store'
 import Google from './containers/Google'
+import DoctorSignup from './containers/DoctorSignup'
 
 const App = () => (
     <Provider store={store}>
@@ -22,6 +23,7 @@ const App = () => (
                 <Route path='/reset-password' element={<ResetPassword />} />
                 <Route path='/password/reset/confirm/:uid/:token' element={<ResetPasswordConfirm />} />
                 <Route path='/activate/:uid/:token' element={<Activate/>} />
+                {/* <Route path='/docsignup' element={<DoctorSignup />} /> */}
             </Routes>
           </Layout>
       </Router>
